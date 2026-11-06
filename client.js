@@ -348,7 +348,7 @@ window.__ModuleLoader__.load({
       zh: {
         'nav.label': '记忆星图',
         'title': '记忆星图',
-        'subtitle': '像神经元一样：被想起的会亮起来，被冷落的会慢慢暗下去。',
+        'subtitle': '像神经元一样：被想起的会亮起来，被冷落的会慢慢暗下去。所有对话共享这一张星图。',
         'action.add': '记录记忆',
         'action.recall': '回忆一下',
         'action.edit': '编辑',
@@ -438,7 +438,7 @@ window.__ModuleLoader__.load({
       en: {
         'nav.label': 'Memory Star Map',
         'title': 'Memory Star Map',
-        'subtitle': 'Like neurons: what you recall lights up, what you neglect slowly goes dark.',
+        'subtitle': 'Like neurons: what you recall lights up, what you neglect slowly goes dark. Every conversation shares one map.',
         'action.add': 'New memory',
         'action.recall': 'Recall',
         'action.edit': 'Edit',

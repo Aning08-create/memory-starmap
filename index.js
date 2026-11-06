@@ -532,7 +532,8 @@ export function apply(ctx) {
   });
 
   /* ---- guidance for the model ---- */
-  ctx.systemPrompt.section({
+  try {
+    ctx.systemPrompt.section({
     name: 'memory-starmap',
     order: 90,
     text: [
@@ -543,10 +544,14 @@ export function apply(ctx) {
       '- 不要把一次性任务、临时路径、代码片段、凭据或用户的隐私数据写进记忆。',
       '- 记忆会随时间和回忆次数变化清晰度；如果用户提到某件事已经过去很久，优先检索并确认，而不是凭空断言。',
     ].join('\n'),
-  });
+    });
+  } catch (err) {
+    // a duplicate from an instance still being disposed must not abort apply
+  }
 
   /* ---- the tool ---- */
-  ctx.tools.register({
+  try {
+    ctx.tools.register({
     name: 'memory_starmap',
     description:
       '读写用户的长期记忆星图。action=save 保存一段值得记住的事；search 按关键词检索相关记忆（检索会强化记忆）；list 列出最近记忆；recall 手动回忆并强化一条；forget 删除一条。',
@@ -630,7 +635,10 @@ export function apply(ctx) {
       }
       return { text: '未知 action。' };
     },
-  });
+    });
+  } catch (err) {
+    // keep the rest of the plugin alive if another instance still owns the name
+  }
 
   /* ---- HTTP bridge for the Web UI ---- */
   ctx.inject(['webServer'], (webCtx) => {
@@ -687,8 +695,9 @@ export function apply(ctx) {
       });
     }
 
-    webCtx.effect(() =>
-      webCtx.webServer.register({
+    webCtx.effect(() => {
+      try {
+        return webCtx.webServer.register({
         kind: 'exact',
         path: API_PATH,
         async handler(req, res) {
@@ -729,7 +738,11 @@ export function apply(ctx) {
             send(res, 500, { ok: false, error: String((err && err.message) || err) });
           }
         },
-      }),
-    );
+        });
+      } catch (err) {
+        // an already-registered exact route keeps serving; retry on next reload
+        return () => {};
+      }
+    });
   });
 }
