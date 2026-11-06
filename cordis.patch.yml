@@ -1,0 +1,3 @@
+- insert:
+    - id: memory-starmap
+      name: '@local/memory-starmap'

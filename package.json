@@ -1,0 +1,30 @@
+{
+  "name": "@local/memory-starmap",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "记忆星图：以神经元方式形成、淡忘与巩固的记忆星图",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  }
+}
